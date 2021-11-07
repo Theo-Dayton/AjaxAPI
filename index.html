@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+	<title>AJAX and APIs</title>
+	<meta charset="utf-8"/>
+	<script>
+		function loadData() {
+			request = new XMLHttpRequest();
+
+			theWord = document.getElementsByName('word')[0].value;
+			request.open("GET", "https://api.agify.io?name=" + theWord, true);
+
+			request.onreadystatechange = function() {
+ 
+				if (request.readyState == 4 && 
+					request.status == 200) 
+				{
+					data = request.responseText;
+					data = JSON.parse(data);
+					document.getElementById("cData").innerHTML = "<br>Your predicted age: " + data.age;
+				}
+				else if (request.readyState == 4 && request.status != 200) 
+				{
+				   document.getElementById("cData").innerHTML += "<br>Request failed!";
+				}
+			}
+			request.send();
+		}  // end load data
+	</script>
+</head>
+<body>
+
+	<h1>Guess age based on name</h1>
+	<p>The API I selected is called Agify.io, which predicts the age of a person based on their name.</p>
+	<p>The website I found it on is: <a href="https://agify.io/" target="_blank">https://agify.io/</a></p>
+	<p>I used my own name for the API request, which I used for the name key</p>
+	<p>This API could be helpful in trying to find out your average demographics for your customers without having to conduct a costly survey.</p>
+	<p>It could also be helpful to use in conjuntion with other APIs to batch analyze results from a list of names</p>
+	<form>Type your name: <input type = 'text' name = 'word'>
+		<br><input type = "button" value = "Get Response"
+			onclick="loadData()">
+	</form>
+	<div id="cData">&nbsp;</div>
+</body>
+</html>
